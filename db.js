@@ -6,9 +6,10 @@ const pool = new Pool({
   database: 'postgres',
   password: 'SenhaForte123!',
   port: 5432,
-  ssl: true
+  ssl: { rejectUnauthorized: false }
 });
 
 module.exports = {
   query: (text, params) => pool.query(text, params),
 };
+
