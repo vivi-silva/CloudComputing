@@ -1,34 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Cadastro de Alunos</title>
+    <title>Cadastro de Alunos</title>
 </head>
 <body>
-  <h1>Cadastro de Alunos</h1>
-  <form id="formAluno">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" required><br><br>
-    <label for="curso">Curso:</label>
-    <input type="text" id="curso" required><br><br>
-    <button type="submit">Cadastrar</button>
-  </form>
-
-  <script>
-    document.getElementById('formAluno').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const nome = document.getElementById('nome').value;
-      const curso = document.getElementById('curso').value;
-
-      const resposta = await fetch('/alunos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, curso })
-      });
-
-      const resultado = await resposta.json();
-      alert('Aluno cadastrado: ' + JSON.stringify(resultado));
-    });
-  </script>
+    <h1>Cadastro de Alunos</h1>
+    <form action="/cadastro" method="POST">
+        <label>Nome:</label>
+        <input type="text" name="nome" /><br />
+        <label>Curso:</label>
+        <input type="text" name="curso" /><br />
+        <button type="submit">Cadastrar</button>
+    </form>
 </body>
 </html>

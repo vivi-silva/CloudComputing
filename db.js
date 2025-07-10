@@ -1,11 +1,14 @@
-import { Client } from 'pg';
+const { Pool } = require('pg');
 
-const client = new Client({
-  connectionString: 'postgresql://adminpucpr:SenhaForte123!@bdmatricula27749.postgres.database.azure.com/postgres?sslmode=require'
+const pool = new Pool({
+    user: 'adminpucpr',
+    host: 'bdmatricula27749.postgres.database.azure.com',
+    database: 'postgres',
+    password: 'SenhaForte123!',
+    port: 5432,
+    ssl: { rejectUnauthorized: false }
 });
 
-client.connect()
-  .then(() => console.log("✅ Conectado ao PostgreSQL"))
-  .catch(err => console.error("Erro ao conectar ao banco:", err));
-
-export default client;
+module.exports = {
+    query: (text, params, callback) => pool.query(text, params, callback)
+};

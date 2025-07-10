@@ -1,31 +1,21 @@
-import express from 'express';
-import client from './db.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const db = require('./db');
 const app = express();
-const port = process.env.PORT || 3000;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-
-app.post('/alunos', async (req, res) => {
-  const { nome, curso } = req.body;
-  try {
-    const result = await client.query(
-      'INSERT INTO alunos (nome, curso) VALUES ($1, $2) RETURNING *',
-      [nome, curso]
-    );
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    console.error('Erro ao inserir:', err);
-    res.status(500).json({ erro: 'Erro ao cadastrar aluno' });
-  }
+app.post('/cadastro', (req, res) => {
+    const { nome, curso } = req.body;
+    db.query('INSERT INTO alunos (nome, curso) VALUES ($1, $2)', [nome, curso], (err) => {
+        if (err) {
+            console.error(err);
+            return res.send('Erro ao cadastrar');
+        }
+        res.send('Aluno cadastrado com sucesso!');
+    });
 });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
