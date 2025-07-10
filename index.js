@@ -6,33 +6,23 @@ const db = require('./db');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Rota principal (formulário)
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
-});
-
-// Rota de sucesso
-app.get('/sucesso.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/sucesso.html'));
-});
 
 // Rota de cadastro
 app.post('/cadastro', async (req, res) => {
   const { nome, curso } = req.body;
   try {
     await db.query('INSERT INTO alunos (nome, curso) VALUES ($1, $2)', [nome, curso]);
-    res.redirect('/sucesso.html');
+    res.send('Cadastro realizado com sucesso!');
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Erro ao cadastrar aluno');
+    console.error('Erro ao inserir no banco:', err);
+    res.status(500).send('Erro no cadastro.');
   }
 });
 
 app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+  console.log(`Servidor rodando em http://localhost:${port}`);
 });
+
 
