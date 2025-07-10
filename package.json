@@ -1,6 +1,7 @@
 {
-  "name": "matricula-app",
+  "name": "cloudcomputing",
   "version": "1.0.0",
+  "description": "Sistema de Cadastro de Alunos",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
